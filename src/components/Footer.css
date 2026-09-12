@@ -114,3 +114,14 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
+.footer-admin-link {
+  color: rgba(251, 243, 228, 0.35);
+  font-size: 0.75rem;
+  text-decoration: none;
+  margin-left: auto;
+}
+
+.footer-admin-link:hover {
+  color: var(--gold);
+}
