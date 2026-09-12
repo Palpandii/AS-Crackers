@@ -11,6 +11,7 @@ export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams()
   const activeCategory = searchParams.get('category') || 'all'
   const [search, setSearch] = useState(searchParams.get('q') || '')
+  const [filtersExpanded, setFiltersExpanded] = useState(false)
 
   const { results, loading, error } = useCategory(activeCategory, search)
 
@@ -48,7 +49,7 @@ export default function Products() {
       <div className="container products-layout">
         <aside className="filter-panel">
           <h4>{t('products.filterAll')}</h4>
-          <div className="cat-list">
+          <div className={`cat-list${filtersExpanded ? ' expanded' : ''}`}>
             <button
               className={`cat-btn${activeCategory === 'all' ? ' active' : ''}`}
               onClick={() => setCategory('all')}
@@ -74,6 +75,13 @@ export default function Products() {
               )
             })}
           </div>
+          <button
+            type="button"
+            className="filter-toggle"
+            onClick={() => setFiltersExpanded((v) => !v)}
+          >
+            {filtersExpanded ? '▲ Show less' : '▼ Show all categories'}
+          </button>
         </aside>
 
         <div>
@@ -84,10 +92,6 @@ export default function Products() {
               placeholder={t('search.placeholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{
-                padding: '8px 14px', borderRadius: 999, border: '1.5px solid rgba(27,19,48,0.15)',
-                fontFamily: 'inherit', fontSize: '0.85rem', minWidth: 180,
-              }}
             />
           </div>
 
