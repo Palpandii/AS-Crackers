@@ -1,0 +1,149 @@
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  position: relative;
+  background: #fff;
+  border-radius: var(--radius-m);
+  border: 1.5px solid rgba(27, 19, 48, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.product-card:hover {
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-3px);
+}
+
+.product-card .thumb-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--sand-dim);
+}
+
+.product-card .thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-card .thumb-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--sand-dim), #fff);
+  color: var(--gold-deep);
+  font-size: 2rem;
+}
+
+.product-card .yt-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(21, 14, 46, 0.85);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.product-card .yt-badge:hover {
+  background: var(--ember);
+}
+
+.product-card .ticket-notch {
+  position: absolute;
+  bottom: -9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--sand);
+}
+
+.product-card .notch-l {
+  left: -9px;
+}
+
+.product-card .notch-r {
+  right: -9px;
+}
+
+.product-card .body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  border-top: 1.5px dashed rgba(27, 19, 48, 0.15);
+}
+
+.product-card .name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink-text);
+  line-height: 1.3;
+  min-height: 3em;
+}
+
+.product-card .pack-tag {
+  font-size: 0.72rem;
+  color: var(--gold-deep);
+  font-weight: 700;
+  background: rgba(245, 166, 35, 0.12);
+  border-radius: 999px;
+  padding: 2px 9px;
+  align-self: flex-start;
+}
+
+.product-card .price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.product-card .price {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.product-card .mrp {
+  font-size: 0.8rem;
+  color: rgba(27, 19, 48, 0.4);
+  text-decoration: line-through;
+}
+
+.product-card .footer-row {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+.product-card .add-btn {
+  border: none;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--sand);
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 8px 16px;
+}
+
+.product-card .add-btn:hover {
+  background: var(--ember-deep);
+}

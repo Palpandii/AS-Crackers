@@ -1,0 +1,71 @@
+import { Link } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext.jsx'
+import { useCart } from '../hooks/useCart.js'
+import QuantitySelector from './QuantitySelector.jsx'
+import './ProductCard.css'
+
+export default function ProductCard({ product }) {
+  const { t, pickBoth } = useLanguage()
+  const { qtyOf, increment, decrement, setQty } = useCart()
+  const qty = qtyOf(product.id)
+  const { en: nameEn, ta: nameTa } = pickBoth(product, 'name')
+
+  return (
+    <div className="product-card">
+      <Link to={`/product/${product.id}`} className="thumb-wrap">
+        <ImageWithFallback src={product.image} alt={nameEn} />
+        {product.youtube_id && (
+          <span className="yt-badge" aria-label="Has video">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+          </span>
+        )}
+        <span className="ticket-notch notch-l" />
+        <span className="ticket-notch notch-r" />
+      </Link>
+
+      <div className="body">
+        <span className="pack-tag">{product.qty_unit}</span>
+        <Link to={`/product/${product.id}`} className="name bi">
+          <span className="bi-en">{nameEn}</span>
+          <span className="bi-ta">{nameTa}</span>
+        </Link>
+
+        <div className="price-row">
+          <span className="price">₹{product.price}</span>
+          {product.mrp > product.price && <span className="mrp">₹{product.mrp}</span>}
+        </div>
+
+        <div className="footer-row">
+          {qty === 0 ? (
+            <button className="add-btn" onClick={() => setQty(product, 1)}>{t('cta.addToCart')}</button>
+          ) : (
+            <QuantitySelector
+              qty={qty}
+              onIncrement={() => increment(product)}
+              onDecrement={() => decrement(product)}
+              onChange={(v) => setQty(product, v)}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ImageWithFallback({ src, alt }) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      onError={(e) => {
+        e.currentTarget.onerror = null
+        e.currentTarget.style.display = 'none'
+        e.currentTarget.parentElement.insertAdjacentHTML(
+          'beforeend',
+          '<div class="thumb-fallback">🎆</div>'
+        )
+      }}
+    />
+  )
+}
