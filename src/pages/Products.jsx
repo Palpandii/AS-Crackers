@@ -3,7 +3,14 @@ import { useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import { useCategory } from '../hooks/useCategory.js'
-import { categories } from '../data/categories.js'
+// BUG FIX: this used to import the static/hardcoded `data/categories.js` file,
+// whose ids (e.g. "bijili", "multi-shot") don't necessarily match the real
+// category ids stored in the live backend/admin panel (e.g. "bijili-crackers").
+// The Home page's category cards use the live `useCategories()` hook, so
+// clicking there worked — but this sidebar was filtering against stale ids,
+// so it could never match any product and always showed "No products found".
+// Switching to the same live hook keeps both in sync automatically.
+import { useCategories } from '../hooks/useCategories.js'
 import './Products.css'
 
 export default function Products() {
@@ -14,6 +21,7 @@ export default function Products() {
   const [filtersExpanded, setFiltersExpanded] = useState(false)
 
   const { results, loading, error } = useCategory(activeCategory, search)
+  const { categories, loading: categoriesLoading } = useCategories()
 
   const setCategory = (id) => {
     const next = new URLSearchParams(searchParams)
@@ -34,7 +42,7 @@ export default function Products() {
     }
     const { en, ta } = pickBoth(cat, 'name')
     return `${en} / ${ta}`
-  }, [activeCategory, tBoth, pickBoth])
+  }, [activeCategory, tBoth, pickBoth, categories])
 
   return (
     <div className="page-shell">
@@ -59,21 +67,25 @@ export default function Products() {
                 <span className="bi-ta">{tBoth('products.filterAll').ta}</span>
               </span>
             </button>
-            {categories.map((c) => {
-              const { en, ta } = pickBoth(c, 'name')
-              return (
-                <button
-                  key={c.id}
-                  className={`cat-btn${activeCategory === c.id ? ' active' : ''}`}
-                  onClick={() => setCategory(c.id)}
-                >
-                  <span className="bi">
-                    <span className="bi-en">{en}</span>
-                    <span className="bi-ta">{ta}</span>
-                  </span>
-                </button>
-              )
-            })}
+            {categoriesLoading ? (
+              <p>Loading…</p>
+            ) : (
+              categories.map((c) => {
+                const { en, ta } = pickBoth(c, 'name')
+                return (
+                  <button
+                    key={c.id}
+                    className={`cat-btn${activeCategory === c.id ? ' active' : ''}`}
+                    onClick={() => setCategory(c.id)}
+                  >
+                    <span className="bi">
+                      <span className="bi-en">{en}</span>
+                      <span className="bi-ta">{ta}</span>
+                    </span>
+                  </button>
+                )
+              })
+            )}
           </div>
           <button
             type="button"

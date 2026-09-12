@@ -22,13 +22,23 @@ export function LanguageProvider({ children }) {
   // pick localized field from a data object, e.g. pickField(product, 'name')
   const pickField = (obj, base) => {
     if (!obj) return ''
-    return lang === 'ta' ? (obj[`${base}_ta`] ?? obj[`${base}_en`]) : obj[`${base}_en`]
+    const en = obj[`${base}_en`] ?? ''
+    const ta = obj[`${base}_ta`]
+    if (lang !== 'ta') return en
+    // BUG FIX: `??` only falls back on null/undefined, not on an empty string.
+    // If a product/category was saved with the Tamil name left blank, ta was
+    // "" (not null), so it displayed as blank instead of falling back to English.
+    return ta && ta.trim() ? ta : en
   }
 
   // return both languages together, e.g. pickBoth(product, 'name') -> { en, ta }
   const pickBoth = (obj, base) => {
     if (!obj) return { en: '', ta: '' }
-    return { en: obj[`${base}_en`] ?? '', ta: obj[`${base}_ta`] ?? obj[`${base}_en`] ?? '' }
+    const en = obj[`${base}_en`] ?? ''
+    const taRaw = obj[`${base}_ta`]
+    // Same empty-string fallback fix as pickField above.
+    const ta = taRaw && taRaw.trim() ? taRaw : en
+    return { en, ta }
   }
 
   // both-language version of a translation key, e.g. tBoth('products.filterAll')

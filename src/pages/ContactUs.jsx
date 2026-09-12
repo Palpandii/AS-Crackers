@@ -2,6 +2,33 @@ import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import './ContentPages.css'
 
+// BUG FIX: VITE_MAPS_EMBED_URL is meant to hold just the bare Google Maps
+// "embed src" URL. But Google's "Embed a map" panel actually gives you the
+// WHOLE <iframe src="..." width="600" height="450" ...> snippet, and if that
+// gets pasted wholesale into the env var, the value ends up wrapped in a
+// leading/trailing quote with junk like `width="600" allowfullscreen=""...`
+// after it. A string starting with a literal `"` isn't a valid absolute URL,
+// so the browser treats it as a RELATIVE path on our own domain — which,
+// thanks to the SPA catch-all rewrite, resolves to index.html and loads the
+// entire site inside the "map" iframe. This helper pulls out just the real
+// https://... URL no matter which way the value was pasted in.
+function extractMapSrc(raw) {
+  if (!raw) return ''
+  const value = String(raw).trim()
+
+  // Full <iframe ...> snippet was pasted in — pull the src="..." out of it.
+  const srcMatch = value.match(/src=["']([^"']+)["']/i)
+  if (srcMatch) return srcMatch[1]
+
+  // Value has a stray leading quote (from copy-pasting a quoted snippet
+  // whose closing quote and trailing attributes leaked into the var).
+  const unquoted = value.replace(/^["']+/, '')
+  const firstQuote = unquoted.indexOf('"')
+  const cleaned = firstQuote === -1 ? unquoted : unquoted.slice(0, firstQuote)
+
+  return cleaned.trim()
+}
+
 export default function ContactUs() {
   const { t, lang } = useLanguage()
   const [form, setForm] = useState({ name: '', phone: '', msg: '' })
@@ -10,7 +37,7 @@ export default function ContactUs() {
   const altPhone = import.meta.env.VITE_ALT_PHONE || ''
   const address = import.meta.env.VITE_BUSINESS_ADDRESS || ''
   const email = import.meta.env.VITE_BUSINESS_EMAIL || ''
-  const mapsEmbed = import.meta.env.VITE_MAPS_EMBED_URL || ''
+  const mapsEmbed = extractMapSrc(import.meta.env.VITE_MAPS_EMBED_URL)
 
   const sendWhatsapp = (e) => {
     e.preventDefault()
