@@ -5,30 +5,25 @@ import QuantitySelector from './QuantitySelector.jsx'
 import './ProductCard.css'
 
 export default function ProductCard({ product }) {
-  const { t, pickBoth } = useLanguage()
+  const { t, pickField } = useLanguage()
   const { qtyOf, increment, decrement, setQty } = useCart()
   const qty = qtyOf(product.id)
-  const { en: nameEn, ta: nameTa } = pickBoth(product, 'name')
+  const name = pickField(product, 'name')
 
   return (
     <div className="product-card">
       <Link to={`/product/${product.id}`} className="thumb-wrap">
-        <ImageWithFallback src={product.image} alt={nameEn} />
+        <ImageWithFallback src={product.image} alt={name} />
         {product.youtube_id && (
           <span className="yt-badge" aria-label="Has video">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
           </span>
         )}
-        <span className="ticket-notch notch-l" />
-        <span className="ticket-notch notch-r" />
       </Link>
 
       <div className="body">
         <span className="pack-tag">{product.qty_unit}</span>
-        <Link to={`/product/${product.id}`} className="name bi">
-          <span className="bi-en">{nameEn}</span>
-          <span className="bi-ta">{nameTa}</span>
-        </Link>
+        <Link to={`/product/${product.id}`} className="name">{name}</Link>
 
         <div className="price-row">
           <span className="price">₹{product.price}</span>

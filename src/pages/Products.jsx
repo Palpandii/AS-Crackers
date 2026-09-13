@@ -3,22 +3,14 @@ import { useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import { useCategory } from '../hooks/useCategory.js'
-// BUG FIX: this used to import the static/hardcoded `data/categories.js` file,
-// whose ids (e.g. "bijili", "multi-shot") don't necessarily match the real
-// category ids stored in the live backend/admin panel (e.g. "bijili-crackers").
-// The Home page's category cards use the live `useCategories()` hook, so
-// clicking there worked — but this sidebar was filtering against stale ids,
-// so it could never match any product and always showed "No products found".
-// Switching to the same live hook keeps both in sync automatically.
 import { useCategories } from '../hooks/useCategories.js'
 import './Products.css'
 
 export default function Products() {
-  const { t, pickField, pickBoth, tBoth } = useLanguage()
+  const { t, pickField, tBoth } = useLanguage()
   const [searchParams, setSearchParams] = useSearchParams()
   const activeCategory = searchParams.get('category') || 'all'
   const [search, setSearch] = useState(searchParams.get('q') || '')
-  const [filtersExpanded, setFiltersExpanded] = useState(false)
 
   const { results, loading, error } = useCategory(activeCategory, search)
   const { categories, loading: categoriesLoading } = useCategories()
@@ -31,18 +23,11 @@ export default function Products() {
   }
 
   const activeLabel = useMemo(() => {
-    if (activeCategory === 'all') {
-      const { en, ta } = tBoth('products.filterAll')
-      return `${en} / ${ta}`
-    }
+    if (activeCategory === 'all') return tBoth('products.filterAll').en
     const cat = categories.find((c) => c.id === activeCategory)
-    if (!cat) {
-      const { en, ta } = tBoth('products.filterAll')
-      return `${en} / ${ta}`
-    }
-    const { en, ta } = pickBoth(cat, 'name')
-    return `${en} / ${ta}`
-  }, [activeCategory, tBoth, pickBoth, categories])
+    if (!cat) return tBoth('products.filterAll').en
+    return pickField(cat, 'name')
+  }, [activeCategory, tBoth, pickField, categories])
 
   return (
     <div className="page-shell">
@@ -54,69 +39,59 @@ export default function Products() {
         </div>
       </div>
 
-      <div className="container products-layout">
-        <aside className="filter-panel">
-          <h4>{t('products.filterAll')}</h4>
-          <div className={`cat-list${filtersExpanded ? ' expanded' : ''}`}>
+      <div className="container">
+        <div className="cat-rail-wrap">
+          <div className="cat-rail-scroll">
             <button
-              className={`cat-btn${activeCategory === 'all' ? ' active' : ''}`}
+              className={`cat-pill${activeCategory === 'all' ? ' active' : ''}`}
               onClick={() => setCategory('all')}
             >
-              <span className="bi">
-                <span className="bi-en">{tBoth('products.filterAll').en}</span>
-                <span className="bi-ta">{tBoth('products.filterAll').ta}</span>
-              </span>
+              <span className="cat-pill-icon">🎇</span>
+              <span>{tBoth('products.filterAll').en}</span>
             </button>
             {categoriesLoading ? (
               <p>Loading…</p>
             ) : (
               categories.map((c) => {
-                const { en, ta } = pickBoth(c, 'name')
+                const name = pickField(c, 'name')
                 return (
                   <button
                     key={c.id}
-                    className={`cat-btn${activeCategory === c.id ? ' active' : ''}`}
+                    className={`cat-pill${activeCategory === c.id ? ' active' : ''}`}
                     onClick={() => setCategory(c.id)}
                   >
-                    <span className="bi">
-                      <span className="bi-en">{en}</span>
-                      <span className="bi-ta">{ta}</span>
-                    </span>
+                    {c.image ? (
+                      <img src={c.image} alt={name} className="cat-pill-img" />
+                    ) : (
+                      <span className="cat-pill-icon">🎆</span>
+                    )}
+                    <span>{name}</span>
                   </button>
                 )
               })
             )}
           </div>
-          <button
-            type="button"
-            className="filter-toggle"
-            onClick={() => setFiltersExpanded((v) => !v)}
-          >
-            {filtersExpanded ? '▲ Show less' : '▼ Show all categories'}
-          </button>
-        </aside>
-
-        <div>
-          <div className="products-meta">
-            <span>{t('products.showing')} <b>{results.length}</b> {t('products.items')} — {activeLabel}</span>
-            <input
-              type="text"
-              placeholder={t('search.placeholder')}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-
-          {results.length === 0 ? (
-            <div className="empty-state">{t('products.empty')}</div>
-          ) : (
-            <div className="product-grid">
-              {results.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          )}
         </div>
+
+        <div className="products-meta">
+          <span>{t('products.showing')} <b>{results.length}</b> {t('products.items')} — {activeLabel}</span>
+          <input
+            type="text"
+            placeholder={t('search.placeholder')}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        {results.length === 0 ? (
+          <div className="empty-state">{t('products.empty')}</div>
+        ) : (
+          <div className="product-grid">
+            {results.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
