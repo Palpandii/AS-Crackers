@@ -136,46 +136,48 @@ export default function ProductsTab() {
             {loading ? (
                 <p>Loading…</p>
             ) : (
-                <table className="admin-table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name (EN)</th>
-                            <th>Name (TA)</th>
-                            <th>Category</th>
-                            <th>Qty unit</th>
-                            <th>MRP</th>
-                            <th>Price</th>
-                            <th>Video</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filtered.map((p) => (
-                            <tr key={p.id}>
-                                <td>
-                                    {p.image
-                                        ? <img src={p.image} alt={p.nameEn} className="admin-thumb" />
-                                        : <div className="admin-thumb admin-thumb-empty" />}
-                                </td>
-                                <td>{p.nameEn}</td>
-                                <td>{p.nameTa}</td>
-                                <td>{p.category}</td>
-                                <td>{p.qtyUnit}</td>
-                                <td>{formatRupees(p.mrp)}</td>
-                                <td>{formatRupees(p.price)}</td>
-                                <td>{p.youtubeId ? '▶ Yes' : '—'}</td>
-                                <td className="admin-row-actions">
-                                    <button className="btn-secondary" onClick={() => openEdit(p)}>Edit</button>
-                                    <button className="btn-icon-danger" onClick={() => handleDelete(p)}>Delete</button>
-                                </td>
+                <div className="admin-table-wrap">
+                    <table className="admin-table admin-table-cards">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name (EN)</th>
+                                <th>Name (TA)</th>
+                                <th>Category</th>
+                                <th>Qty unit</th>
+                                <th>MRP</th>
+                                <th>Price</th>
+                                <th>Video</th>
+                                <th></th>
                             </tr>
-                        ))}
-                        {filtered.length === 0 && (
-                            <tr><td colSpan={9} className="admin-empty">No products found.</td></tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filtered.map((p) => (
+                                <tr key={p.id}>
+                                    <td data-label="Image">
+                                        {p.image
+                                            ? <img src={p.image} alt={p.nameEn} className="admin-thumb" />
+                                            : <div className="admin-thumb admin-thumb-empty" />}
+                                    </td>
+                                    <td data-label="Name (EN)">{p.nameEn}</td>
+                                    <td data-label="Name (TA)">{p.nameTa}</td>
+                                    <td data-label="Category">{p.category}</td>
+                                    <td data-label="Qty unit">{p.qtyUnit}</td>
+                                    <td data-label="MRP">{formatRupees(p.mrp)}</td>
+                                    <td data-label="Price">{formatRupees(p.price)}</td>
+                                    <td data-label="Video">{p.youtubeId ? '▶ Yes' : '—'}</td>
+                                    <td className="admin-row-actions" data-label="Actions">
+                                        <button className="btn-secondary" onClick={() => openEdit(p)}>Edit</button>
+                                        <button className="btn-icon-danger" onClick={() => handleDelete(p)}>Delete</button>
+                                    </td>
+                                </tr>
+                            ))}
+                            {filtered.length === 0 && (
+                                <tr><td colSpan={9} className="admin-empty">No products found.</td></tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             )}
 
             {form && (

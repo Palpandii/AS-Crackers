@@ -8,17 +8,12 @@
 .nav-topstrip .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   height: 34px;
   gap: 12px;
   overflow: hidden;
 }
 
-.nav-topstrip .scroller {
-  display: flex;
-  gap: 26px;
-  white-space: nowrap;
-}
 
 .nav-topstrip .lang-mini {
   flex-shrink: 0;

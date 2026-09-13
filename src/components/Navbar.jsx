@@ -29,9 +29,6 @@ export default function Navbar() {
     <header>
       <div className="nav-topstrip">
         <div className="container">
-          <div className="scroller">
-            <span>{t('top.tagline')}</span>
-          </div>
           <div className="lang-mini"><LanguageToggle compact /></div>
         </div>
       </div>

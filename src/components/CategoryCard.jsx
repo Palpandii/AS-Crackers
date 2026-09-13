@@ -15,7 +15,7 @@ function playClickSound() {
 }
 
 export default function CategoryCard({ category }) {
-  const { pickBoth } = useLanguage()
+  const { pickField } = useLanguage()
   const [imgFailed, setImgFailed] = useState(false)
   const { products } = useProducts()
   const count = products.filter((p) => p.category === category.id).length
@@ -25,7 +25,7 @@ export default function CategoryCard({ category }) {
     .join('')
     .slice(0, 2)
     .toUpperCase()
-  const { en: nameEn, ta: nameTa } = pickBoth(category, 'name')
+  const name = pickField(category, 'name')
 
   const showImage = category.image && !imgFailed
 
@@ -39,17 +39,14 @@ export default function CategoryCard({ category }) {
         {showImage ? (
           <img
             src={category.image}
-            alt={nameEn}
+            alt={name}
             onError={() => setImgFailed(true)}
           />
         ) : (
           initials
         )}
       </span>
-      <span className="label bi">
-        <span className="bi-en">{nameEn}</span>
-        <span className="bi-ta">{nameTa}</span>
-      </span>
+      <span className="label">{name}</span>
       <span className="count">{count} items</span>
     </Link>
   )

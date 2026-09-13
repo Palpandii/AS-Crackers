@@ -22,7 +22,7 @@ export default function AdminLayout() {
         <div className="admin-shell">
             <aside className="admin-sidebar">
                 <div className="admin-brand">AS Crackers<span>Admin</span></div>
-                <nav>
+                <nav className="admin-desktop-nav">
                     {TABS.map((tab) => (
                         <NavLink
                             key={tab.to}
@@ -35,9 +35,22 @@ export default function AdminLayout() {
                 </nav>
                 <button className="admin-logout" onClick={handleLogout}>Log out</button>
             </aside>
+
             <main className="admin-content">
                 <Outlet />
             </main>
+
+            <nav className="admin-bottom-nav">
+                {TABS.map((tab) => (
+                    <NavLink
+                        key={tab.to}
+                        to={tab.to}
+                        className={({ isActive }) => 'admin-nav-link' + (isActive ? ' active' : '')}
+                    >
+                        {tab.label}
+                    </NavLink>
+                ))}
+            </nav>
         </div>
     )
 }
