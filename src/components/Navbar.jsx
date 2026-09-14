@@ -27,13 +27,33 @@ export default function Navbar() {
 
   return (
     <header>
+      <style>{`
+        @keyframes sheenMove {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .nav-main-animated {
+          background: linear-gradient(120deg,
+              #fbf3e4 0%,
+              #fdf0d9 20%,
+              #ffe9c7 35%,
+              #fbf3e4 50%,
+              #ffe0e0 65%,
+              #f3e6ff 80%,
+              #fbf3e4 100%);
+          background-size: 300% 100%;
+          animation: sheenMove 10s ease-in-out infinite;
+        }
+      `}</style>
+
       <div className="nav-topstrip">
         <div className="container">
           <div className="lang-mini"><LanguageToggle compact /></div>
         </div>
       </div>
 
-      <div className="nav-main">
+      <div className="nav-main nav-main-animated">
         <div className="container">
           <NavLink to="/" className="nav-brand">
             <span className="mark">
