@@ -30,7 +30,7 @@ export default function Hero() {
 
         <div className="hero-visual">
           <img
-            src="/images/hero-banner.jpg"
+            src="/images/hero-banner.jpg.jpeg"
             alt="AS Crackers Sivakasi"
             className="hero-image"
           />
