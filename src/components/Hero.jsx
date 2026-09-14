@@ -29,25 +29,11 @@ export default function Hero() {
         </div>
 
         <div className="hero-visual">
-          <svg className="burst" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            {Array.from({ length: 16 }).map((_, i) => {
-              const angle = (i * 360) / 16
-              const len = i % 2 === 0 ? 78 : 52
-              const x2 = 100 + len * Math.cos((angle * Math.PI) / 180)
-              const y2 = 100 + len * Math.sin((angle * Math.PI) / 180)
-              return (
-                <line
-                  key={i}
-                  x1="100" y1="100" x2={x2} y2={y2}
-                  stroke={i % 3 === 0 ? '#E23E33' : '#F5A623'}
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-              )
-            })}
-            <circle cx="100" cy="100" r="14" fill="#FBF3E4" />
-            <circle cx="100" cy="100" r="22" fill="none" stroke="#F5A623" strokeWidth="2" opacity="0.6" />
-          </svg>
+          <img
+            src="/images/hero-banner.jpg"
+            alt="AS Crackers Sivakasi"
+            className="hero-image"
+          />
         </div>
       </div>
     </section>
