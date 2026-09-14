@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import { useCart } from '../hooks/useCart.js'
+import { useClickSound } from '../hooks/useClickSound.js'
 import QuantitySelector from './QuantitySelector.jsx'
 import './ProductCard.css'
 
@@ -9,6 +10,22 @@ export default function ProductCard({ product }) {
   const { qtyOf, increment, decrement, setQty } = useCart()
   const qty = qtyOf(product.id)
   const name = pickField(product, 'name')
+  const playClick = useClickSound()
+
+  const handleAdd = () => {
+    playClick()
+    setQty(product, 1)
+  }
+
+  const handleIncrement = () => {
+    playClick()
+    increment(product)
+  }
+
+  const handleDecrement = () => {
+    playClick()
+    decrement(product)
+  }
 
   return (
     <div className="product-card">
@@ -32,12 +49,12 @@ export default function ProductCard({ product }) {
 
         <div className="footer-row">
           {qty === 0 ? (
-            <button className="add-btn" onClick={() => setQty(product, 1)}>{t('cta.addToCart')}</button>
+            <button className="add-btn" onClick={handleAdd}>{t('cta.addToCart')}</button>
           ) : (
             <QuantitySelector
               qty={qty}
-              onIncrement={() => increment(product)}
-              onDecrement={() => decrement(product)}
+              onIncrement={handleIncrement}
+              onDecrement={handleDecrement}
               onChange={(v) => setQty(product, v)}
             />
           )}
