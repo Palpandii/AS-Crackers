@@ -2,7 +2,7 @@ const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || ''
 
 export function buildWhatsAppOrderUrl(items, totalPrice, lang = 'en', customer = {}) {
   const isTa = lang === 'ta'
-  const { customerName = '', customerPhone = '', fulfillment = 'pickup' } = customer
+  const { customerName = '', customerPhone = '', customerAddress = '', fulfillment = 'pickup' } = customer
   const lines = []
 
   lines.push(isTa ? 'வணக்கம் AS Crackers 🎆' : 'Hello AS Crackers 🤩')
@@ -19,6 +19,9 @@ export function buildWhatsAppOrderUrl(items, totalPrice, lang = 'en', customer =
     ? (isTa ? 'டெலிவரி' : 'Delivery')
     : (isTa ? 'கடையில் வாங்குதல்' : 'Store pickup')
   lines.push(`${isTa ? 'முறை' : 'Fulfillment'}: ${fulfillmentLabel}`)
+  if (fulfillment === 'delivery' && customerAddress.trim()) {
+    lines.push(`${isTa ? 'முகவரி' : 'Address'}: ${customerAddress.trim()}`)
+  }
   lines.push('')
 
   if (items.length === 0) {

@@ -54,6 +54,9 @@ export default function OrdersTab() {
             <div className="admin-page-header">
                 <h2>Orders</h2>
                 <div className="admin-page-actions">
+                    <button className="btn-secondary" onClick={loadOrders} disabled={loading}>
+                        {loading ? 'Refreshing…' : 'Refresh'}
+                    </button>
                     <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                         <option value="ALL">All statuses</option>
                         {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -72,6 +75,7 @@ export default function OrdersTab() {
                             <th>#</th>
                             <th>Customer</th>
                             <th>Phone</th>
+                            <th>Type</th>
                             <th>Placed</th>
                             <th>Total</th>
                             <th>Status</th>
@@ -85,6 +89,7 @@ export default function OrdersTab() {
                                     <td>{order.id}</td>
                                     <td>{order.customerName}</td>
                                     <td>{order.customerPhone}</td>
+                                    <td>{order.fulfillmentType === 'DELIVERY' ? 'Delivery' : 'Pickup'}</td>
                                     <td>{formatDate(order.createdAt)}</td>
                                     <td>{formatRupees(order.totalAmount)}</td>
                                     <td>
@@ -108,9 +113,9 @@ export default function OrdersTab() {
                                 </tr>
                                 {expandedId === order.id && (
                                     <tr className="admin-expanded-row">
-                                        <td colSpan={7}>
+                                        <td colSpan={8}>
                                             <div className="order-detail">
-                                                <p><strong>Address:</strong> {order.customerAddress || '—'}</p>
+                                                <p><strong>Address:</strong> {order.customerAddress || (order.fulfillmentType === 'DELIVERY' ? '—' : 'Store pickup (no address)')}</p>
                                                 <table className="admin-table nested">
                                                     <thead>
                                                         <tr><th>Item</th><th>Qty</th><th>Unit price</th><th>Line total</th></tr>
@@ -133,7 +138,7 @@ export default function OrdersTab() {
                             </React.Fragment>
                         ))}
                         {filtered.length === 0 && (
-                            <tr><td colSpan={7} className="admin-empty">No orders found.</td></tr>
+                            <tr><td colSpan={8} className="admin-empty">No orders found.</td></tr>
                         )}
                     </tbody>
                 </table>

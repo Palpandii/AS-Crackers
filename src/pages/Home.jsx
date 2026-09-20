@@ -6,6 +6,7 @@ import { useLanguage } from '../context/LanguageContext.jsx'
 import { useCategories } from '../hooks/useCategories.js'
 import { useProducts } from '../hooks/useProducts.js'
 import { buildWhatsAppOrderUrl } from '../utils/whatsapp.js'
+import { MIN_ORDER_AMOUNT, formatINR } from '../config/order.js'
 import './Home.css'
 
 export default function Home() {
@@ -18,6 +19,13 @@ export default function Home() {
   return (
     <div className="page-shell">
       <Hero />
+
+      <div className="min-order-banner" role="note">
+        <div className="container">
+          <b>{t('home.minOrder')}: ₹{formatINR(MIN_ORDER_AMOUNT)}</b>
+          <span className="sub">{t('home.minOrderSub')}</span>
+        </div>
+      </div>
 
       <section className="home-section">
         <div className="container">

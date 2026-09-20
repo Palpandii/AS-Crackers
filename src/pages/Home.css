@@ -1,28 +1,49 @@
-.home-section { padding: 54px 0; }
-.home-section.tinted { background: #fff; }
+.home-section {
+  padding: 54px 0;
+}
+
+.home-section.tinted {
+  background: #fff;
+}
 
 .why-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
+
 .why-card {
   background: var(--sand);
   border-radius: var(--radius-m);
   padding: 26px 22px;
-  border: 1.5px solid rgba(27,19,48,0.06);
+  border: 1.5px solid rgba(27, 19, 48, 0.06);
 }
+
 .why-card .num {
-  width: 40px; height: 40px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: var(--ink);
   color: var(--gold);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 900;
   margin-bottom: 14px;
 }
-.why-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--ink); }
-.why-card p { margin: 0; font-size: 0.88rem; color: rgba(27,19,48,0.65); line-height: 1.55; }
+
+.why-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.why-card p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(27, 19, 48, 0.65);
+  line-height: 1.55;
+}
 
 .cta-strip {
   background: linear-gradient(120deg, var(--ember-deep), var(--ember));
@@ -35,9 +56,48 @@
   gap: 20px;
   flex-wrap: wrap;
 }
-.cta-strip h3 { margin: 0 0 4px; font-size: 1.3rem; }
-.cta-strip p { margin: 0; opacity: 0.85; font-size: 0.9rem; }
+
+.cta-strip h3 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.cta-strip p {
+  margin: 0;
+  opacity: 0.85;
+  font-size: 0.9rem;
+}
 
 @media (max-width: 760px) {
-  .why-grid { grid-template-columns: 1fr; }
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Minimum order strip under the hero — yellow so it can't be missed */
+.min-order-banner {
+  background: #FFD60A;
+  color: #1B1330;
+  border-top: 2px solid rgba(21, 14, 46, 0.18);
+  border-bottom: 2px solid rgba(21, 14, 46, 0.18);
+  padding: 12px 0;
+  text-align: center;
+}
+
+.min-order-banner .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 14px;
+}
+
+.min-order-banner b {
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.min-order-banner .sub {
+  font-size: 0.88rem;
+  font-weight: 600;
 }

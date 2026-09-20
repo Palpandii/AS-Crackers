@@ -72,4 +72,25 @@ export function clearCatalogCache() {
     categoriesCache = null
 }
 
+export async function placeOrder(payload, timeoutMs = 8000) {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), timeoutMs)
+    try {
+        const res = await fetch(`${API_BASE}/api/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: controller.signal,
+        })
+        if (!res.ok) {
+            let message = `Order could not be saved (${res.status})`
+            try { message = (await res.json()).error || message } catch { /* not JSON */ }
+            throw new Error(message)
+        }
+        return await res.json()
+    } finally {
+        clearTimeout(timer)
+    }
+}
+
 export { API_BASE }

@@ -102,6 +102,16 @@ export const translations = {
     'cart.delivery': 'Delivery',
     'cart.fillDetails': 'Please enter your name and phone number to continue.',
     'home.downloadPriceList': 'Download Price List',
+    // --- minimum order / delivery address ---
+    'home.minOrder': 'Minimum order',
+    'home.minOrderSub': 'Your cart must reach this amount before you can place an order.',
+    'cart.belowMin': 'Add ₹{need} more to reach the minimum order of ₹{min}. Name & phone unlock once you reach it.',
+    'cart.minReached': 'Minimum order reached ✓',
+    'cart.addressLabel': 'Delivery address',
+    'cart.addressPlaceholder': 'House no., street, area, city, pincode',
+    'cart.fillAddress': 'Please enter your delivery address.',
+    'cart.invalidPhone': 'Please enter a valid 10-digit phone number.',
+    'cart.placing': 'Placing order…',
   },
   ta: {
     'top.tagline': 'சிறந்த ஃபேன்சி கிரக்கர்ஸ், மத்தாப்பு மற்றும் பரிசுப் பெட்டிகள் மொத்த & சில்லறை விற்பனை',
@@ -206,6 +216,16 @@ export const translations = {
     'cart.delivery': 'டெலிவரி',
     'cart.fillDetails': 'தொடர உங்கள் பெயர் மற்றும் தொலைபேசி எண்ணை உள்ளிடவும்.',
     'home.downloadPriceList': 'விலை பட்டியல் பதிவிறக்கம்',
+    // --- minimum order / delivery address ---
+    'home.minOrder': 'குறைந்தபட்ச ஆர்டர்',
+    'home.minOrderSub': 'ஆர்டர் செய்ய உங்கள் கார்ட் இந்த தொகையை எட்ட வேண்டும்.',
+    'cart.belowMin': 'குறைந்தபட்ச ஆர்டர் ₹{min}. இன்னும் ₹{need} சேர்த்தால் பெயர் & எண்ணை உள்ளிடலாம்.',
+    'cart.minReached': 'குறைந்தபட்ச ஆர்டர் தொகை எட்டப்பட்டது ✓',
+    'cart.addressLabel': 'டெலிவரி முகவரி',
+    'cart.addressPlaceholder': 'வீட்டு எண், தெரு, பகுதி, நகரம், பின்கோடு',
+    'cart.fillAddress': 'உங்கள் டெலிவரி முகவரியை உள்ளிடவும்.',
+    'cart.invalidPhone': 'சரியான 10 இலக்க தொலைபேசி எண்ணை உள்ளிடவும்.',
+    'cart.placing': 'ஆர்டர் அனுப்பப்படுகிறது…',
   },
 }
 

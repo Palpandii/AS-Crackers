@@ -168,3 +168,21 @@
   border: none;
   width: 100%;
 }
+
+.cart-min-note {
+  margin: 0 16px 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-s);
+  background: #FFF3B0;
+  border: 1.5px solid #FFD60A;
+  color: #1B1330;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.cart-min-note.ok {
+  background: #DDF5E8;
+  border-color: #1E8F5F;
+  color: #146B46;
+}
