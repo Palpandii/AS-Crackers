@@ -75,6 +75,7 @@ export default function Footer() {
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} {t('brand.name')}. {t('footer.rights')}</span>
         <span>{t('footer.note')}</span>
+        <span className="footer-credit">Developed by Leno Tech</span>
         <Link to="/admin" className="footer-admin-link">Admin</Link>
       </div>
     </footer>
