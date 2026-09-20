@@ -105,9 +105,33 @@ export async function apiDelete(path) {
     return handle(res)
 }
 
+// Shrinks big phone photos before upload (max 1200px, JPEG) so the site stays fast
+// and the database stays small. If anything goes wrong, the original file is sent.
+async function shrinkImage(file, maxSize = 1200, quality = 0.85) {
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return file
+    try {
+        const bitmap = await createImageBitmap(file)
+        const scale = Math.min(1, maxSize / Math.max(bitmap.width, bitmap.height))
+        const w = Math.round(bitmap.width * scale)
+        const h = Math.round(bitmap.height * scale)
+        const canvas = document.createElement('canvas')
+        canvas.width = w
+        canvas.height = h
+        const ctx = canvas.getContext('2d')
+        ctx.fillStyle = '#ffffff'
+        ctx.fillRect(0, 0, w, h)
+        ctx.drawImage(bitmap, 0, 0, w, h)
+        const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality))
+        if (!blob || blob.size >= file.size) return file
+        return new File([blob], file.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' })
+    } catch {
+        return file
+    }
+}
+
 export async function apiUpload(file) {
     const form = new FormData()
-    form.append('file', file)
+    form.append('file', await shrinkImage(file))
     const res = await fetch(`${API_BASE}/api/upload`, {
         method: 'POST',
         headers: { ...authHeaders() },
