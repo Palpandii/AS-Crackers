@@ -18,11 +18,13 @@ import ProductsTab from './admin/pages/ProductsTab.jsx'
 import OrdersTab from './admin/pages/OrdersTab.jsx'
 import EstimatesTab from './admin/pages/EstimatesTab.jsx'
 import CategoriesTab from './admin/pages/CategoriesTab.jsx'
+import FireworksOverlay from './components/FireworksOverlay.jsx'
 
 
 function Storefront() {
   return (
     <>
+      <FireworksOverlay />
       <Navbar />
       <main>
         <Routes>
