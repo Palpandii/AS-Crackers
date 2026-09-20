@@ -1,9 +1,66 @@
 .home-section {
   padding: 54px 0;
+  position: relative;
 }
 
+/* ---------- featured section: night-sky panel behind the dark product cards ---------- */
 .home-section.tinted {
-  background: #fff;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--ink) 0%, var(--ink-soft) 100%);
+  color: var(--sand);
+}
+
+.home-section.tinted::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 12% 20%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(2px 2px at 70% 15%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 40% 65%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1.5px 1.5px at 88% 55%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1.5px 1.5px at 25% 85%, rgba(255, 255, 255, 0.3), transparent);
+  animation: twinkle 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.home-section.tinted::after {
+  content: '';
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 340px;
+  background:
+    radial-gradient(40% 100% at 15% 0%, rgba(255, 107, 53, 0.28), transparent 70%),
+    radial-gradient(35% 100% at 55% 0%, rgba(108, 76, 224, 0.26), transparent 70%),
+    radial-gradient(40% 100% at 90% 0%, rgba(14, 156, 148, 0.24), transparent 70%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.home-section.tinted .container {
+  position: relative;
+  z-index: 1;
+}
+
+.home-section.tinted .section-head h2 {
+  color: var(--sand);
+}
+
+.home-section.tinted .section-head .see-all {
+  color: var(--gold);
 }
 
 .why-grid {
@@ -12,24 +69,51 @@
   gap: 20px;
 }
 
+/* rotating spark themes so each "why" card gets its own colour, not one flat ink circle */
+.why-card:nth-child(3n+1) {
+  --accent: var(--spark-orange);
+  --accent-2: var(--spark-orange-2);
+}
+
+.why-card:nth-child(3n+2) {
+  --accent: var(--spark-violet);
+  --accent-2: var(--spark-violet-2);
+}
+
+.why-card:nth-child(3n+3) {
+  --accent: var(--spark-teal);
+  --accent-2: var(--spark-teal-2);
+}
+
 .why-card {
+  --accent: var(--gold);
+  --accent-2: var(--gold-deep);
+  position: relative;
   background: var(--sand);
   border-radius: var(--radius-m);
   padding: 26px 22px;
-  border: 1.5px solid rgba(27, 19, 48, 0.06);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 28px -18px color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
 .why-card .num {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--ink);
-  color: var(--gold);
+  background: linear-gradient(140deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 900;
   margin-bottom: 14px;
+  box-shadow: 0 8px 16px -8px color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
 .why-card h3 {
@@ -45,8 +129,13 @@
   line-height: 1.55;
 }
 
+/* ---------- CTA strip: animated multi-colour gradient, festive shimmer ---------- */
 .cta-strip {
-  background: linear-gradient(120deg, var(--ember-deep), var(--ember));
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(115deg, var(--ember-deep), var(--ember) 35%, var(--gold-deep) 68%, var(--spark-magenta) 100%);
+  background-size: 300% 300%;
+  animation: cta-shift 10s ease infinite;
   color: #fff;
   border-radius: var(--radius-l);
   padding: 34px 32px;
@@ -57,6 +146,37 @@
   flex-wrap: wrap;
 }
 
+@keyframes cta-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.cta-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 10% 30%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 85% 25%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 50% 80%, rgba(255, 255, 255, 0.4), transparent);
+  animation: twinkle 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.cta-strip>* {
+  position: relative;
+  z-index: 1;
+}
+
 .cta-strip h3 {
   margin: 0 0 4px;
   font-size: 1.3rem;
@@ -64,40 +184,44 @@
 
 .cta-strip p {
   margin: 0;
-  opacity: 0.85;
+  opacity: 0.9;
   font-size: 0.9rem;
+}
+
+.cta-strip .btn-gold {
+  animation: cta-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes cta-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.35);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .home-section.tinted::before,
+  .cta-strip::before {
+    animation: none;
+  }
+
+  .cta-strip {
+    animation: none;
+  }
+
+  .cta-strip .btn-gold {
+    animation: none;
+  }
 }
 
 @media (max-width: 760px) {
   .why-grid {
     grid-template-columns: 1fr;
   }
-}
-
-/* Minimum order strip under the hero — yellow so it can't be missed */
-.min-order-banner {
-  background: #FFD60A;
-  color: #1B1330;
-  border-top: 2px solid rgba(21, 14, 46, 0.18);
-  border-bottom: 2px solid rgba(21, 14, 46, 0.18);
-  padding: 12px 0;
-  text-align: center;
-}
-
-.min-order-banner .container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 4px 14px;
-}
-
-.min-order-banner b {
-  font-size: 1.1rem;
-  font-weight: 900;
-}
-
-.min-order-banner .sub {
-  font-size: 0.88rem;
-  font-weight: 600;
 }

@@ -11,6 +11,9 @@ export default function ProductCard({ product }) {
   const qty = qtyOf(product.id)
   const name = pickField(product, 'name')
   const playClick = useClickSound()
+  const discount = product.mrp > product.price
+    ? Math.round(100 - (product.price / product.mrp) * 100)
+    : 0
 
   const handleAdd = () => {
     playClick()
@@ -29,7 +32,11 @@ export default function ProductCard({ product }) {
 
   return (
     <div className="product-card">
+      <span className="spark-dot spark-dot-a" aria-hidden="true" />
+      <span className="spark-dot spark-dot-b" aria-hidden="true" />
+      <span className="spark-dot spark-dot-c" aria-hidden="true" />
       <Link to={`/product/${product.id}`} className="thumb-wrap">
+        {discount > 0 && <span className="discount-badge">{discount}% OFF</span>}
         <ImageWithFallback src={product.image} alt={name} />
         {product.youtube_id && (
           <span className="yt-badge" aria-label="Has video">
