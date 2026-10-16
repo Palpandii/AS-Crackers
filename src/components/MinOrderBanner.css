@@ -1,0 +1,91 @@
+/* Yellow minimum-order notice (turns green when reached) */
+.min-order {
+    --mo-bg1: #FFD93D;
+    --mo-bg2: #FFB703;
+    --mo-ink: #3A2A00;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--mo-bg1), var(--mo-bg2));
+    color: var(--mo-ink);
+    box-shadow: 0 8px 18px -12px rgba(255, 183, 3, 0.9);
+}
+
+.min-order.reached {
+    --mo-bg1: #3ECF8E;
+    --mo-bg2: #1E8F5F;
+    --mo-ink: #fff;
+}
+
+.min-order .mo-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.min-order .mo-icon {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.95rem;
+    background: var(--mo-ink);
+    color: var(--mo-bg2);
+}
+
+.min-order .mo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.3;
+}
+
+.min-order .mo-text b {
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+
+.min-order .mo-text span {
+    font-size: 0.78rem;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+/* slim bar above product grid */
+.min-order.strip {
+    padding: 9px 16px;
+    margin-bottom: 18px;
+}
+
+.min-order.strip .mo-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 0.82rem;
+}
+
+/* cart drawer box */
+.min-order.cart {
+    padding: 12px 14px;
+    margin: 14px 16px 0;
+}
+
+.min-order .mo-track {
+    height: 7px;
+    margin-top: 10px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(58, 42, 0, 0.18);
+}
+
+.min-order.reached .mo-track {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.min-order .mo-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--mo-ink);
+    transition: width 0.3s ease;
+}

@@ -20,6 +20,7 @@ export default function CartDrawer() {
 
   const isDelivery = fulfillment === 'delivery'
   const belowMin = totalPrice < MIN_ORDER_AMOUNT
+  const minPct = Math.min(100, Math.round((totalPrice / MIN_ORDER_AMOUNT) * 100))
   const phoneDigits = customerPhone.replace(/\D/g, '')
   const phoneValid = phoneDigits.length >= 10 && phoneDigits.length <= 13
   const nameOk = customerName.trim() !== ''
@@ -109,12 +110,20 @@ export default function CartDrawer() {
         </div>
 
         {items.length > 0 && (
-          <div className={`cart-min-note${belowMin ? '' : ' ok'}`}>
-            {belowMin
-              ? t('cart.belowMin')
-                .replace('{need}', formatINR(Math.ceil(MIN_ORDER_AMOUNT - totalPrice)))
-                .replace('{min}', formatINR(MIN_ORDER_AMOUNT))
-              : t('cart.minReached')}
+          <div className={`cart-min-note${belowMin ? '' : ' ok'}`} role="status">
+            <span className="cart-min-icon" aria-hidden="true">{belowMin ? '!' : '✓'}</span>
+            <div className="cart-min-body">
+              <span className="cart-min-text">
+                {belowMin
+                  ? t('cart.belowMin')
+                    .replace('{need}', formatINR(Math.ceil(MIN_ORDER_AMOUNT - totalPrice)))
+                    .replace('{min}', formatINR(MIN_ORDER_AMOUNT))
+                  : t('cart.minReached')}
+              </span>
+              <div className="cart-min-track" aria-hidden="true">
+                <div className="cart-min-fill" style={{ width: `${minPct}%` }} />
+              </div>
+            </div>
           </div>
         )}
 

@@ -1,19 +1,19 @@
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard.jsx'
+import MinOrderBanner from '../components/MinOrderBanner.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import { useCategory } from '../hooks/useCategory.js'
-import { useCategories } from '../hooks/useCategories.js'
+import { categories } from '../data/categories.js'
 import './Products.css'
 
 export default function Products() {
-  const { t, pickField, tBoth } = useLanguage()
+  const { t, pickField } = useLanguage()
   const [searchParams, setSearchParams] = useSearchParams()
   const activeCategory = searchParams.get('category') || 'all'
   const [search, setSearch] = useState(searchParams.get('q') || '')
 
-  const { results, loading, error } = useCategory(activeCategory, search)
-  const { categories, loading: categoriesLoading } = useCategories()
+  const results = useCategory(activeCategory, search)
 
   const setCategory = (id) => {
     const next = new URLSearchParams(searchParams)
@@ -23,11 +23,10 @@ export default function Products() {
   }
 
   const activeLabel = useMemo(() => {
-    if (activeCategory === 'all') return tBoth('products.filterAll').en
+    if (activeCategory === 'all') return t('products.filterAll')
     const cat = categories.find((c) => c.id === activeCategory)
-    if (!cat) return tBoth('products.filterAll').en
-    return pickField(cat, 'name')
-  }, [activeCategory, tBoth, pickField, categories])
+    return cat ? pickField(cat, 'name') : t('products.filterAll')
+  }, [activeCategory, t, pickField])
 
   return (
     <div className="page-shell">
@@ -39,59 +38,54 @@ export default function Products() {
         </div>
       </div>
 
-      <div className="container">
-        <div className="cat-rail-wrap">
-          <div className="cat-rail-scroll">
+      <div className="container products-layout">
+        <aside className="filter-panel">
+          <h4>{t('products.filterAll')}</h4>
+          <div className="cat-list">
             <button
-              className={`cat-pill${activeCategory === 'all' ? ' active' : ''}`}
+              className={`cat-btn${activeCategory === 'all' ? ' active' : ''}`}
               onClick={() => setCategory('all')}
             >
-              <span className="cat-pill-icon">🎇</span>
-              <span>{tBoth('products.filterAll').en}</span>
+              <span>{t('products.filterAll')}</span>
             </button>
-            {categoriesLoading ? (
-              <p>Loading…</p>
-            ) : (
-              categories.map((c) => {
-                const name = pickField(c, 'name')
-                return (
-                  <button
-                    key={c.id}
-                    className={`cat-pill${activeCategory === c.id ? ' active' : ''}`}
-                    onClick={() => setCategory(c.id)}
-                  >
-                    {c.image ? (
-                      <img src={c.image} alt={name} className="cat-pill-img" />
-                    ) : (
-                      <span className="cat-pill-icon">🎆</span>
-                    )}
-                    <span>{name}</span>
-                  </button>
-                )
-              })
-            )}
-          </div>
-        </div>
-
-        <div className="products-meta">
-          <span>{t('products.showing')} <b>{results.length}</b> {t('products.items')} — {activeLabel}</span>
-          <input
-            type="text"
-            placeholder={t('search.placeholder')}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-
-        {results.length === 0 ? (
-          <div className="empty-state">{t('products.empty')}</div>
-        ) : (
-          <div className="product-grid">
-            {results.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {categories.map((c) => (
+              <button
+                key={c.id}
+                className={`cat-btn${activeCategory === c.id ? ' active' : ''}`}
+                onClick={() => setCategory(c.id)}
+              >
+                <span>{pickField(c, 'name')}</span>
+              </button>
             ))}
           </div>
-        )}
+        </aside>
+
+        <div>
+          <MinOrderBanner variant="strip" />
+          <div className="products-meta">
+            <span>{t('products.showing')} <b>{results.length}</b> {t('products.items')} — {activeLabel}</span>
+            <input
+              type="text"
+              placeholder={t('search.placeholder')}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                padding: '8px 14px', borderRadius: 999, border: '1.5px solid rgba(27,19,48,0.15)',
+                fontFamily: 'inherit', fontSize: '0.85rem', minWidth: 180,
+              }}
+            />
+          </div>
+
+          {results.length === 0 ? (
+            <div className="empty-state">{t('products.empty')}</div>
+          ) : (
+            <div className="product-grid">
+              {results.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
