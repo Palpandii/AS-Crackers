@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import { useCart } from '../hooks/useCart.js'
 import QuantitySelector from './QuantitySelector.jsx'
+import { playClickSound } from '../utils/playClickSound.js'
 import './ProductCard.css'
 
 const fmt = (n) => Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 })
@@ -50,13 +51,16 @@ export default function ProductCard({ product }) {
         {/* Pinned to the bottom of every card */}
         <div className="footer-row">
           {qty === 0 ? (
-            <button className="add-btn" onClick={() => setQty(product, 1)}>
+            <button
+              className="add-btn"
+              onClick={() => { playClickSound(); setQty(product, 1) }}
+            >
               {t('cta.addToCart')}
             </button>
           ) : (
             <QuantitySelector
               qty={qty}
-              onIncrement={() => increment(product)}
+              onIncrement={() => { playClickSound(); increment(product) }}
               onDecrement={() => decrement(product)}
               onChange={(v) => setQty(product, v)}
             />
