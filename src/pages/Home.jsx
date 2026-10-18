@@ -1,31 +1,23 @@
 import { Link } from 'react-router-dom'
 import Hero from '../components/Hero.jsx'
+import MinOrderBanner from '../components/MinOrderBanner.jsx'
 import CategoryCard from '../components/CategoryCard.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
-import { useCategories } from '../hooks/useCategories.js'
-import { useProducts } from '../hooks/useProducts.js'
+import { categories } from '../data/categories.js'
+import { products } from '../data/products.js'
 import { buildWhatsAppOrderUrl } from '../utils/whatsapp.js'
-import { MIN_ORDER_AMOUNT, formatINR } from '../config/order.js'
 import './Home.css'
 
 export default function Home() {
   const { t, lang } = useLanguage()
-  const { categories, loading: categoriesLoading } = useCategories()
-  const { products, loading: productsLoading } = useProducts()
   const featured = products.filter((p) => [8, 55, 89, 130, 152, 191, 9, 61].includes(p.id)).slice(0, 8)
   const enquiryUrl = buildWhatsAppOrderUrl([], 0, lang)
 
   return (
     <div className="page-shell">
       <Hero />
-
-      <div className="min-order-banner" role="note">
-        <div className="container">
-          <b>{t('home.minOrder')}: ₹{formatINR(MIN_ORDER_AMOUNT)}</b>
-          <span className="sub">{t('home.minOrderSub')}</span>
-        </div>
-      </div>
+      <MinOrderBanner amount={3500} />
 
       <section className="home-section">
         <div className="container">
@@ -33,15 +25,11 @@ export default function Home() {
             <h2>{t('home.categoriesTitle')}</h2>
             <Link to="/categories" className="see-all">{t('cta.viewAll')}</Link>
           </div>
-          {categoriesLoading ? (
-            <p>Loading…</p>
-          ) : (
-            <div className="cat-rail">
-              {categories.slice(0, 12).map((c) => (
-                <CategoryCard key={c.id} category={c} />
-              ))}
-            </div>
-          )}
+          <div className="cat-rail">
+            {categories.slice(0, 12).map((c) => (
+              <CategoryCard key={c.id} category={c} />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -51,15 +39,11 @@ export default function Home() {
             <h2>{t('home.featuredTitle')}</h2>
             <Link to="/products" className="see-all">{t('cta.viewAll')}</Link>
           </div>
-          {productsLoading ? (
-            <p>Loading…</p>
-          ) : (
-            <div className="product-grid">
-              {featured.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          )}
+          <div className="product-grid">
+            {featured.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
         </div>
       </section>
 
